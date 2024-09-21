@@ -98,7 +98,7 @@ const Home = () => {
                         <h1 class="text-4xl font-bold tracking-tight text-primary-50 sm:text-6xl">Video APIs <br/> for digital twins</h1>
                         <p class="mt-6 text-lg leading-8 text-primary-50 homepara">Build immersive AI-generated video experiences in your application</p>
                         <div class="mt-10 flex items-center justify-center gap-x-6">
-                            <a href="#" class="btnx text-primary-50">Sign Up For Free</a>
+                            <a href="/signup" class="btnx text-primary-50">Sign Up For Free</a>
                             <a href="#" class="btnx second text-primary-50 ">Talk to Sales <span aria-hidden="true">→</span></a>
                         </div>
                     </div>
@@ -109,7 +109,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-
+            {/*
             <section className="dark:bg-gray-900" data-modal-target="default-modal" data-modal-toggle="default-modal">
                 <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
                     <div className="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
@@ -168,6 +168,7 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+            */}
         </div>
     );
 };

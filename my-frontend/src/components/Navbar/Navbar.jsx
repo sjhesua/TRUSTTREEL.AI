@@ -1,25 +1,27 @@
 import React, { useState } from "react";
+import { ChevronDownIcon } from '@heroicons/react/24/solid';
+import { motion, AnimatePresence } from 'framer-motion';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
-  const [isDropdownOpen2, setIsDropdownOpen2] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(null);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const toggleDropdown1 = () => {
-    setIsDropdownOpen1(!isDropdownOpen1);
+  const toggleDropdown = (dropdown) => {
+    setDropdownOpen(dropdownOpen === dropdown ? null : dropdown);
   };
 
-  const toggleDropdown2 = () => {
-    setIsDropdownOpen2(!isDropdownOpen2);
+  const dropdownVariants = {
+    hidden: { opacity: 0, height: 0 },
+    visible: { opacity: 1, height: 'auto' },
   };
 
   return (
-    <nav className="font-reader ">
+    <nav className="font-reader relative z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
         <div className="flex-shrink-0">
           <a href="#" className="text-xl font-bold text-primary-50">
@@ -29,81 +31,79 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-4 items-baseline">
           <div className="relative group">
             <button
-              onClick={toggleDropdown2}
-              className="text-primary-50 hover:text-blue-500 nav-link"
+              onClick={() => toggleDropdown('product')}
+              className="text-primary-50 hover:text-[#f230aa] nav-link flex items-center"
             >
               Product
+              <ChevronDownIcon className="w-5 h-5 ml-1" />
             </button>
-            <div
-              className={`${isDropdownOpen2 ? "md:block" : "hidden"
-                } absolute bg-white shadow-lg rounded mt-2 navbar_dropdown-list `}
-            >
-              <a
-                href="#"
-                className="block px-4 py-2 text-primary-900 hover:bg-blue-500 hover:text-white"
-              >
-                Video Generation
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-primary-900 hover:bg-blue-500 hover:text-white"
-              >
-                Conversational Video Interface
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-primary-900 hover:bg-blue-500 hover:text-white"
-              >
-                AI Models
-              </a>
-            </div>
+            <AnimatePresence>
+              {dropdownOpen === 'product' && (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  variants={dropdownVariants}
+                  className="absolute bg-white shadow-lg rounded mt-2 navbar_dropdown-list"
+                >
+                  <a href="#" className="block px-4 py-2 text-primary-900 hover:text-[#f230aa]">
+                    Video Generation
+                  </a>
+                  <a href="#" className="block px-4 py-2 text-primary-900 hover:text-[#f230aa]">
+                    Conversational Video Interface
+                  </a>
+                  <a href="#" className="block px-4 py-2 text-primary-900 hover:text-[#f230aa]">
+                    AI Models
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-          <a href="#" className="text-primary-50 hover:text-blue-500 nav-link">
+          <a href="#" className="text-primary-50 hover:text-[#f230aa] nav-link">
             Pricing
           </a>
-          <a href="#" className="text-primary-50 hover:text-blue-500 nav-link">
+          <a href="#" className="text-primary-50 hover:text-[#f230aa] nav-link">
             Docs
           </a>
           <div className="relative group">
             <button
-              onClick={toggleDropdown1}
-              className="text-primary-50 hover:text-blue-500 nav-link"
+              onClick={() => toggleDropdown('resources')}
+              className="text-primary-50 hover:text-[#f230aa] nav-link flex items-center"
             >
               Resources
+              <ChevronDownIcon className="w-5 h-5 ml-1" />
             </button>
-            <div
-              className={`${isDropdownOpen1 ? "md:block" : "hidden"
-                }  absolute bg-white shadow-lg rounded mt-2 navbar_dropdown-list`}
-            >
-              <a
-                href="#"
-                className="block px-4 py-2 text-primary-900 hover:bg-blue-500 hover:text-white"
-              >
-                Blog
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-primary-900 hover:bg-blue-500 hover:text-white"
-              >
-                Changelog
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-primary-900 hover:bg-blue-500 hover:text-white"
-              >
-                Support
-              </a>
-            </div>
+            <AnimatePresence>
+              {dropdownOpen === 'resources' && (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  variants={dropdownVariants}
+                  className="absolute bg-white shadow-lg rounded mt-2 navbar_dropdown-list"
+                >
+                  <a href="#" className="block px-4 py-2 text-primary-900  hover:text-[#f230aa]">
+                    Blog
+                  </a>
+                  <a href="#" className="block px-4 py-2 text-primary-900  hover:text-[#f230aa]">
+                    Changelog
+                  </a>
+                  <a href="#" className="block px-4 py-2 text-primary-900  hover:text-[#f230aa]">
+                    Support
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-          <a href="#" className="text-primary-50 hover:text-blue-500 nav-link">
+          <a href="#" className="text-primary-50 hover:text-[#f230aa] nav-link">
             Careers
           </a>
         </div>
         <div className="hidden md:flex space-x-4 items-baseline">
-          <a href="/login" className="text-primary-50 hover:text-blue-500 nav-link">
-            Iniciar sesión
+          <a href="/login" className="text-primary-50 hover:text-[#f230aa] nav-link">
+          Log In
           </a>
-          <a href="#" className="rounded-md bg-indigo-600 text-primary-50 hover:text-blue-500 nav-link btnx">
+          <a href="/signup" className="rounded-md  text-primary-50 hover:text-primary-50 nav-link bg-indigo-600 btnx">
             Get Started For Free
           </a>
         </div>
@@ -130,80 +130,53 @@ const Navbar = () => {
         </div>
       </div>
       {isOpen && (
-        <div className="md:hidden">
-          <a
-            href="#"
-            className="block px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
-          >
-            Opción 1
+        <div className="md:hidden relative z-10 bg-white shadow-lg rounded mt-2 p-4">
+          <a href="#" className="block px-4 py-2 text-primary-900 hover:bg-[#f230aa] hover:text-primary-50 rounded-full">
+            Product
           </a>
-          <a
-            href="#"
-            className="block px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
-          >
-            Opción 2
+          <a href="#" className="block px-4 py-2 text-primary-900 hover:bg-[#f230aa] hover:text-primary-50 rounded-full">
+            Pricing
+          </a>
+          <a href="#" className="block px-4 py-2 text-primary-900 hover:bg-[#f230aa] hover:text-primary-50 rounded-full">
+            Docs
           </a>
           <button
-            onClick={toggleDropdown1}
-            className="block w-full px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
+            onClick={() => toggleDropdown('resources')}
+            className="block w-full px-4 py-2 text-primary-900 hover:bg-[#f230aa] hover:text-primary-50 rounded-full flex items-center justify-between"
           >
-            Opción 3
+            <div></div>
+            <h3 className="-mr-10">Resources</h3>
+            <ChevronDownIcon className="w-5 h-5 ml-1" />
           </button>
-          {isDropdownOpen1 && (
-            <div className="pl-4">
-              <a
-                href="#"
-                className="block px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
+          <AnimatePresence>
+            {dropdownOpen === 'resources' && (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={dropdownVariants}
+                className="pl-4"
               >
-                Sub-opción 1
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
-              >
-                Sub-opción 2
-              </a>
-            </div>
-          )}
-          <button
-            onClick={toggleDropdown2}
-            className="block w-full px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
-          >
-            Opción 4
-          </button>
-          {isDropdownOpen2 && (
-            <div className="pl-4">
-              <a
-                href="#"
-                className="block px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
-              >
-                Sub-opción 1
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
-              >
-                Sub-opción 2
-              </a>
-            </div>
-          )}
-          <a
-            href="#"
-            className="block px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
-          >
-            Opción 5
+                <a href="#" className="block px-4 py-2 text-primary-900 hover:bg-[#f230aa] hover:text-primary-50 rounded-full">
+                  Blog
+                </a>
+                <a href="#" className="block px-4 py-2 text-primary-900 hover:bg-[#f230aa] hover:text-primary-50 rounded-full">
+                  Changelog
+                </a>
+                <a href="#" className="block px-4 py-2 text-primary-900 hover:bg-[#f230aa] hover:text-primary-50 rounded-full">
+                  Support
+                </a>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <a href="#" className="block px-4 py-2 text-primary-900 hover:bg-[#f230aa] hover:text-primary-50 rounded-full">
+            Careers
           </a>
-          <a
-            href="#"
-            className="block px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
-          >
-            Iniciar sesión
+          <a href="/login" className="block px-4 py-2 text-primary-900 hover:bg-[#f230aa] hover:text-primary-50 rounded-full">
+            Log In
           </a>
-          <a
-            href="#"
-            className=" rounded-md bg-indigo-600 block px-4 py-2 text-primary-50 hover:bg-blue-500 hover:text-white"
-          >
-            Registrarse
+          <a href="/signup" className="block px-4 py-2 hover:bg-[#f230aa] hover:text-primary-50 rounded-full">
+            Get Started For Free
           </a>
         </div>
       )}
