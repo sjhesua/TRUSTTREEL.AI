@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function EndConversationButton({ conversationId }) {
   const [response, setResponse] = useState(null);
@@ -6,7 +7,7 @@ function EndConversationButton({ conversationId }) {
 
   const endConversation = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/ejecutar_end_conversation/${conversationId}/`, {
+      const res = await fetch(`${backendUrl}/ejecutar_end_conversation/${conversationId}/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

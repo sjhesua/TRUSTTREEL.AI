@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ClientList = ({ clients }) => {
   const [clientList, setClientList] = useState(clients);
-
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8000/client/delete-clients/${id}/`, {
+      const response = await fetch(`${backendUrl}/client/delete-clients/${id}/`, {
         method: 'DELETE',
       });
       if (response.ok) {
@@ -18,6 +18,10 @@ const ClientList = ({ clients }) => {
     }
   };
 
+  useEffect(() => {
+    setClientList(clients);
+  }, [clients]);
+
   return (
     <div className="container mx-auto mt-10 p-4">
       <h2 className="text-2xl font-bold mb-6 text-center md:text-left">Client List</h2>
@@ -27,13 +31,13 @@ const ClientList = ({ clients }) => {
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
                 Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
                 Email
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
                 Actions
               </th>
             </tr>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const EmailForm = () => {
     const [subject, setSubject] = useState('Link con La video conferencia');
@@ -11,7 +12,7 @@ const EmailForm = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const response = await fetch('http://localhost:8000/send-email/', {
+            const response = await fetch(`${backendUrl}/send-email/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

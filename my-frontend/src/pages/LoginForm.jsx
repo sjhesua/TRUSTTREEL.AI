@@ -41,7 +41,8 @@ const LoginForm = () => {
               <label className="block text-sm font-medium">Email</label>
               <input
                 type="email"
-                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder='Enter Email'
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#f230aa] focus:outline-none focus:border-[#f230aa]"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -51,7 +52,8 @@ const LoginForm = () => {
               <label className="block text-sm font-medium">Password</label>
               <input
                 type="password"
-                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder='Enter Password'
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#f230aa] focus:outline-none focus:border-[#f230aa]"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -59,11 +61,11 @@ const LoginForm = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+              className="w-full bg-[#f230aa] text-white p-2 border border-[#f230aa] rounded-full hover:bg-white hover:text-[#f230aa]"
             >
               Login
             </button>
-            <a href="/signup" className="text-blue-500 hover:underline">Don't have an account? Register here</a>
+            <a href="/signup" className="text-[#f230aa] hover:underline ">Don't have an account? Register here</a>
           </form>
         </div>
       </div>

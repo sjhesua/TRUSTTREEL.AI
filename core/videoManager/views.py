@@ -3,6 +3,7 @@ from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
+from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
@@ -220,7 +221,8 @@ class TavusVideoCreationView(APIView):
             "background_url": background_url,
             "replica_id": replica_id,
             "script": script,
-            "video_name": video_name
+            "video_name": video_name,
+            "callback_url":"http://206.1.232.24:8000/videos/tavus/callback/"
         }
         headers = {
             "x-api-key": "<api-key>",  # Reemplaza <api-key> con tu clave API real
@@ -233,3 +235,11 @@ class TavusVideoCreationView(APIView):
             return Response(response.json(), status=response.status_code)
         except requests.exceptions.RequestException as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def tavus_callback(request):
+    # Imprimir el contenido recibido en la consola
+    print(request.data)
+    
+    # Devolver una respuesta con el contenido recibido
+    return Response({"received_data": request.data}, status=status.HTTP_200_OK)

@@ -16,4 +16,5 @@ class VideoGenerationQueueItem(models.Model):
     videoText = models.CharField(max_length=100)
     queue = models.ForeignKey(VideoGenerationQueue, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    url= models.CharField(max_length=100)
     status = models.BooleanField(default=False)

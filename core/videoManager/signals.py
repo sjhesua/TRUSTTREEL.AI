@@ -17,7 +17,8 @@ def create_video_on_tavus(sender, instance, created, **kwargs):
             "background_url": "",  # Puedes personalizar estos valores según sea necesario
             "replica_id": replica_id,      # Puedes personalizar estos valores según sea necesario
             "script": instance.videoText,
-            "video_name": f"Video_{instance.id}"
+            "video_name": f"{instance.id}",
+            "callback_url":"http://206.1.232.24:8000/videos/tavus/callback/"
         }
         headers = {
             "x-api-key": os.getenv("TAVUS_KEY"),  # Reemplaza <api-key> con tu clave API real

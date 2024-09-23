@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import VideoRecorder from '../components/VideoRecorder';
-
 import './conferencia.css';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const Conferencia = () => {
     const [permissionsGranted, setPermissionsGranted] = useState(false);
     
@@ -68,7 +69,7 @@ const Conferencia = () => {
         const fetchConversation = async () => {
             if (!iniciado) {
                 try {
-                    const response = await fetch('http://localhost:8000/ejecutar-crear-conversacion/', {
+                    const response = await fetch(`${backendUrl}/ejecutar-crear-conversacion/`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',

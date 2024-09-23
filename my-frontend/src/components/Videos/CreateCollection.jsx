@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const CreateCollection = () => {
   const [libraryId, setLibraryId] = useState('');
@@ -9,7 +10,7 @@ const CreateCollection = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8000/video/api/create_collection/', {
+      const res = await axios.post(`${backendUrl}/video/api/create_collection/`, {
         library_id: libraryId,
       });
       setResponse(res.data);

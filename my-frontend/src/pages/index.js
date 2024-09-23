@@ -8,3 +8,4 @@ export {default as VideoConference} from './VideoConference2.jsx';
 export {default as UploadExcel} from './subidaFile.jsx';
 export {default as LoginForm} from './LoginForm.jsx';
 export {default as SignUpForm} from './signUpForm.jsx';
+export {default as VideoList} from './videoList.jsx';

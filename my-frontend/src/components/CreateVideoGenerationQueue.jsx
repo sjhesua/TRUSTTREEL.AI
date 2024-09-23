@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const CreateVideoGenerationQueue = ({ replicaCode }) => {
     const [texts, setTexts] = useState(['']);
@@ -26,7 +27,7 @@ const CreateVideoGenerationQueue = ({ replicaCode }) => {
         const token = localStorage.getItem('token'); // Obtener el token JWT del almacenamiento local
         try {
             const res = await axios.post(
-                'http://localhost:8000/videos/api/video-generation-queue/',
+                `${backendUrl}/videos/api/video-generation-queue/`,
                 { replicaCode: replicaCode, texts: texts },
                 {
                     headers: {

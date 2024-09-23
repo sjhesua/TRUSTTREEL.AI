@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import {jwtDecode} from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import { ThemeProvider } from "@material-tailwind/react";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const swal = require('sweetalert2');
 
@@ -16,7 +17,7 @@ export const AuthProvider = ({children}) => {
     const navigate = useNavigate();
 
     const loginUser = async (email, password) => {
-        let url = "http://localhost:8000/company/api/token/";
+        let url = `${backendUrl}/company/api/token/`;
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -49,7 +50,7 @@ export const AuthProvider = ({children}) => {
     }
 
     const registerUser = async (username, email, password,password2,company=null) => {
-        let url = "http://localhost:8000/company/api/register/";
+        let url = `${backendUrl}/company/api/register/`;
         const body = { username, email, password, password2 };
         if (company) {
             body.company = company;

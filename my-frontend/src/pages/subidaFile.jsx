@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../components/Sidebar/Sidebar';
 import ClientList from '../components/clientList';
+import withAuth from '../funtions/withAuth';
+import { PlusIcon } from '@heroicons/react/24/solid';
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const UploadExcel = () => {
 
@@ -23,7 +27,7 @@ const UploadExcel = () => {
     const handleAddClient = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8000/client/add-clients/', {
+            const response = await fetch(`${backendUrl}/client/add-clients/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -34,6 +38,7 @@ const UploadExcel = () => {
             if (response.ok) {
                 setMessage('Client added successfully');
                 setShowModal(false);
+                fetchClients();
                 // Actualizar la lista de clientes si es necesario
             } else {
                 setMessage('Failed to add client');
@@ -54,36 +59,36 @@ const UploadExcel = () => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('http://localhost:8000/client/upload-excel/', formData, {
+            const response = await axios.post(`${backendUrl}/client/upload-excel/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
             setMessage(response.data.success || 'File uploaded successfully');
             setUsers(response.data.added_clients);
-            console.log(response.data.added_clients)
+            fetchClients();
         } catch (error) {
             setMessage(error.response.data.error || 'Error uploading file');
         }
     };
 
-    useEffect(() => {
-        const fetchClients = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/client/search-clients/', {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}` // Asumiendo que el token está almacenado en localStorage
-                    }
-                });
-                setUsers(response.data);
-                console.log(response.data)
-            } catch (err) {
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const fetchClients = async () => {
+        try {
+            const response = await axios.get(`${backendUrl}/client/search-clients/`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Asumiendo que el token está almacenado en localStorage
+                }
+            });
+            setUsers(response.data);
+            console.log(response.data)
+        } catch (err) {
+            setError(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchClients();
     }, []);
 
@@ -92,24 +97,32 @@ const UploadExcel = () => {
 
 
     return (
-        <div>
+        <div className="ml-20">
             <Sidebar />
-            <h2 className="text-2xl font-bold mb-6 mt-6">Upload Excel File</h2>
+            <div className='flex flex-col md:flex-row items-center justify-around p-4 space-y-4 md:space-y-0 md:space-x-4'>
+                <h2 className="text-2xl font-bold mb-6 mt-6 text-center md:text-left">Upload Excel File</h2>
 
-            <form onSubmit={handleSubmit}>
-                <input type="file" onChange={handleFileChange} />
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-full bg-j-pink">Upload</button>
-            </form>
+                <form className='flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4' onSubmit={handleSubmit}>
+                    <div className="w-full md:w-auto overflow-hidden">
+                        <input
+                            type="file"
+                            onChange={handleFileChange}
+                            className="w-full md:w-auto truncate"
+                        />
+                    </div>
+                    <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-full bg-j-pink">Upload</button>
+                </form>
 
-            {message && <p>{message}</p>}
+                {message && <p className="text-center md:text-left">{message}</p>}
 
-            <button
-                onClick={() => setShowModal(true)}
-                className="bg-green-500 text-white px-4 py-2 rounded mt-4 rounded-full bg-j-pink"
-            >
-                Add Client
-            </button>
-
+                <button
+                    onClick={() => setShowModal(true)}
+                    className="bg-green-500 text-white px-4 py-2 rounded-full bg-j-pink flex items-center"
+                >
+                    Add Client
+                    <PlusIcon className="h-5 w-5 ml-2" />
+                </button>
+            </div>
             <ClientList clients={users} />
 
             {showModal && (
@@ -158,7 +171,7 @@ const UploadExcel = () => {
                                                     </button>
                                                     <button
                                                         type="button"
-                                                        onClick={() => setShowModal(false)}
+                                                        onClick={() => { setShowModal(false) }}
                                                         className="ml-4 bg-gray-500 text-white px-4 py-2 rounded-full "
                                                     >
                                                         Cancel
@@ -176,6 +189,5 @@ const UploadExcel = () => {
         </div>
     );
 };
-
-export default UploadExcel;
+export default withAuth(UploadExcel);
 

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import EndConversationButton from './EndConversationButton';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const VideoRecorder = ({conversationId,className}) => {
     const [isRecording, setIsRecording] = useState(false);
@@ -57,7 +58,7 @@ const VideoRecorder = ({conversationId,className}) => {
 
     const endConversation = async () => {
         try {
-          const res = await fetch(`http://localhost:8000/ejecutar_end_conversation/${conversationId}/`, {
+          const res = await fetch(`${backendUrl}/ejecutar_end_conversation/${conversationId}/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

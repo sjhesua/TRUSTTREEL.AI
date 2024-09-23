@@ -6,6 +6,7 @@ import { AiOutlineVideoCameraAdd, AiOutlineUserAdd } from "react-icons/ai";
 
 import CreateVideoGenerationQueue from '../components/CreateVideoGenerationQueue';
 import axios from 'axios';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const CreateVideo = () => {
 
@@ -51,7 +52,7 @@ const CreateVideo = () => {
     const [images, setImages] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/avatar/api/images/')
+        axios.get(`${backendUrl}/avatar/api/images/`)
             .then(response => {
                 setImages(response.data);
             })
@@ -65,7 +66,6 @@ const CreateVideo = () => {
             <Sidebar></Sidebar>
             <div className='ml-20 sm:ml-60 md:ml-60'>
                 <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 '>
-                
                 {isCreatingConversation === 'video'? (
                 <div class="flex justify-center items-center h-screen p-4">
                         <div class=" flex-colum bg-white shadow-lg rounded-lg w-full h-full max-w-3xl p-6 flex flex-col">
@@ -87,9 +87,9 @@ const CreateVideo = () => {
                                     <div className="grid grid-cols-[repeat(auto-fill,_minmax(276px,_1fr))] gap-6">
                                         {/* MAP */}
                                         {images.map((image, index) => (
-                                        <div key={index} onClick={() => handleCardClick(`http://localhost:8000/${image.image}`, image.replicaName,image.code, index)} className={`border bg-card text-card-foreground shadow-sm group rounded-md outline-primary hover:shadow cursor-pointer ${selectedCardIndex === index ? 'border-4 border-pink-500' : ''}`}>
+                                        <div key={index} onClick={() => handleCardClick(`${backendUrl}/${image.image}`, image.replicaName,image.code, index)} className={`border bg-card text-card-foreground shadow-sm group rounded-md outline-primary hover:shadow cursor-pointer ${selectedCardIndex === index ? 'border-4 border-pink-500' : ''}`}>
                                             <div className='p-2.5 pb-4'>
-                                                <img src={`http://localhost:8000/${image.image}`} alt="Gimy" className="h-full w-full object-cover mb-2" />
+                                                <img src={`${backendUrl}/${image.image}`} alt="Gimy" className="h-full w-full object-cover mb-2" />
                                             </div>
                                             <div className='p-6 pt-0 flex flex-col content-start items-start px-2.5 pb-4'>
                                                 <span>{image.replicaName}{image.code}</span>
@@ -130,9 +130,9 @@ const CreateVideo = () => {
                                         <div className="grid grid-cols-[repeat(auto-fill,_minmax(276px,_1fr))] gap-6">
                                             {/* MAP */}
                                             {images.map((image, index) => (
-                                            <div key={index} onClick={() => handleCardClick(`http://localhost:8000/${image.image}`, image.replicaName,image.code, index)} className={`border bg-card text-card-foreground shadow-sm group rounded-md outline-primary hover:shadow cursor-pointer ${selectedCardIndex === index ? 'border-4 border-pink-500' : ''}`}>
+                                            <div key={index} onClick={() => handleCardClick(`${backendUrl}/${image.image}`, image.replicaName,image.code, index)} className={`border bg-card text-card-foreground shadow-sm group rounded-md outline-primary hover:shadow cursor-pointer ${selectedCardIndex === index ? 'border-4 border-pink-500' : ''}`}>
                                                 <div className='p-2.5 pb-4'>
-                                                    <img src={`http://localhost:8000/${image.image}`} alt="Gimy" className="h-full w-full object-cover mb-2" />
+                                                    <img src={`${backendUrl}/${image.image}`} alt="Gimy" className="h-full w-full object-cover mb-2" />
                                                 </div>
                                                 <div className='p-6 pt-0 flex flex-col content-start items-start px-2.5 pb-4'>
                                                     <span>{image.replicaName}</span>

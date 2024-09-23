@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from . import views
-from .views import CreateCollection,VideoStream, upload_video, CreateVideoGenerationQueueView
+from .views import CreateCollection,VideoStream, upload_video, CreateVideoGenerationQueueView,tavus_callback
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -9,4 +9,5 @@ urlpatterns = [
     path('api/upload/', VideoStream.as_view(), name='video-upload'),
     path('upload-video/', upload_video, name='upload_video'),
     path('api/video-generation-queue/', CreateVideoGenerationQueueView.as_view(), name='create_video_generation_queue'),
+    path('tavus/callback/', tavus_callback, name='tavus_callback'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

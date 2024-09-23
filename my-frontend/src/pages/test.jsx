@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function VideoUpload() {
   const [recording, setRecording] = useState(false);
@@ -43,7 +44,7 @@ function VideoUpload() {
     formData.append('video_file', fragment, `video_${Date.now()}.webm`);
 
     try {
-      const response = await fetch('http://localhost:8000/videos/api/upload/', {
+      const response = await fetch(`${backendUrl}/videos/api/upload/`, {
         method: 'POST',
         body: formData,
       });
