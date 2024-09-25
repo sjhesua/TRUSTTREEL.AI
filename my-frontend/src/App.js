@@ -2,7 +2,7 @@ import './App.css';
 
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { Home,Mesajes,Conferencia,VideoRecorder,Dashboard,CreateVideo,VideoConference,UploadExcel,VideoList,LoginForm,SignUpForm } from './pages';
+import { Home,Mesajes,Conferencia,VideoRecorder,Dashboard,CreateVideo,VideoApp,VideoConference,UploadExcel,VideoList,LoginForm,SignUpForm } from './pages';
 
 function App() {
   return (
@@ -21,6 +21,7 @@ function App() {
               <Route path="/dashboard/videolist" element={<VideoList />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<SignUpForm />} />
+              <Route path="/app/*" element={<VideoApp />} />
             </Routes>
           </AuthProvider>
         </Router>

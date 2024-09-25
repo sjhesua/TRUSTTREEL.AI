@@ -69,21 +69,21 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
-ALLOWED_HOSTS = ['localhost', '.localhost','206.1.232.24',]
+ALLOWED_HOSTS = ['localhost', '.localhost',f"{os.getenv('BACKEND_IP')}",]
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:8000",
     "http://127.0.0.1:3000",
     "http://localhost:3000",
-    "http://206.1.232.24",
-    "http://206.1.232.24:3000",
+    f"http://{os.getenv('BACKEND_IP')}",
+    f"http://{os.getenv('BACKEND_IP')}:3000",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "http://206.1.232.24",
-    "http://206.1.232.24:3000",
+    f"http://{os.getenv('BACKEND_IP')}",
+    f"http://{os.getenv('BACKEND_IP')}:3000",
 ]
 
 MEDIA_URL = '/media/'
@@ -207,5 +207,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.office365.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'jhesua0208@hotmail.com'
-EMAIL_HOST_PASSWORD = 'M@d3l3y0719'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''

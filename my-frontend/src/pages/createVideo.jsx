@@ -67,7 +67,7 @@ const CreateVideo = () => {
             <div className='ml-20 sm:ml-60 md:ml-60'>
                 <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 '>
                 {isCreatingConversation === 'video'? (
-                <div class="flex justify-center items-center h-screen p-4">
+                <div class="flex justify-center items-center h-auto min-h-full p-4">
                         <div class=" flex-colum bg-white shadow-lg rounded-lg w-full h-full max-w-3xl p-6 flex flex-col">
 
                             <label class="text-lg font-semibold text-gray-700 mb-4">Create Video</label>

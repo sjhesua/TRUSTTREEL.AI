@@ -7,7 +7,6 @@ const WaveVisualizer = ({ onSpeakingChange, onStartSpeaking, onStopSpeaking,clas
   const analyserRef = useRef(null);
   const dataArrayRef = useRef(null);
   const animationIdRef = useRef(null);
-  const isSpeakingRef = useRef(isSpeaking);
 
   const handleSpeakingChange = (speaking) => {
     setIsSpeaking(speaking);

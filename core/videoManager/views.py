@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -187,13 +187,15 @@ class CreateVideoGenerationQueueView(APIView):
 
     def post(self, request, *args, **kwargs):
         texts = request.data.get('texts', [])
-        print(request.data)
         replicaCode = request.data['replicaCode']
+        videoName = request.data['videoName']
+        customeURL = request.data['customeURL']
+        
         if not texts:
             return Response({"error": "No texts provided"}, status=status.HTTP_400_BAD_REQUEST)
 
         user = request.user
-        queue = VideoGenerationQueue.objects.create(user=user,replicId=replicaCode)
+        queue = VideoGenerationQueue.objects.create(user=user,replicId=replicaCode,videoName=videoName,customeURL=customeURL)
         items = []
         for text in texts:
             item = VideoGenerationQueueItem(queue=queue, videoText=text)
@@ -202,6 +204,29 @@ class CreateVideoGenerationQueueView(APIView):
 
         serializer = VideoGenerationQueueSerializer(queue)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class VideoGenerationQueueItemListView(generics.ListAPIView):
+    serializer_class = VideoGenerationQueueSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        return VideoGenerationQueueItem.objects.filter(queue__user_id=user_id)
+
+class VideoGenerationQueueListView(generics.ListAPIView):
+    serializer_class = VideoGenerationQueueSerializer
+
+    def get_queryset(self):
+        user_id = self.request.user.id
+        return VideoGenerationQueue.objects.filter(user_id=user_id)
+
+class VideoPorUrl(APIView):
+    def get(self, request, *args, **kwargs):
+        custome_url = request.query_params.get('customeURL')
+        if custome_url is not None:
+            queues = VideoGenerationQueue.objects.filter(customeURL=custome_url)
+            serializer = VideoGenerationQueueSerializer(queues, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"error": "customeURL parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
 
 #TAVUS
 class TavusVideoCreationView(APIView):
@@ -222,7 +247,7 @@ class TavusVideoCreationView(APIView):
             "replica_id": replica_id,
             "script": script,
             "video_name": video_name,
-            "callback_url":"http://206.1.232.24:8000/videos/tavus/callback/"
+            "callback_url":"http://206.1.164.33:8000/videos/tavus/callback/"
         }
         headers = {
             "x-api-key": "<api-key>",  # Reemplaza <api-key> con tu clave API real
@@ -240,6 +265,14 @@ class TavusVideoCreationView(APIView):
 def tavus_callback(request):
     # Imprimir el contenido recibido en la consola
     print(request.data)
-    
-    # Devolver una respuesta con el contenido recibido
-    return Response({"received_data": request.data}, status=status.HTTP_200_OK)
+    # Obtener el video_name y download_url de la solicitud
+    video_name = request.data.get('video_name')
+    download_url = request.data.get('download_url')
+    try:
+        # Actualizar el objeto VideoGenerationQueueItem
+        video_item = VideoGenerationQueueItem.objects.get(id=video_name)
+        video_item.url = download_url
+        video_item.save()
+        return Response({"message": "URL updated successfully"}, status=status.HTTP_200_OK)
+    except VideoGenerationQueueItem.DoesNotExist:
+        return Response({"error": "VideoGenerationQueueItem not found"}, status=status.HTTP_404_NOT_FOUND)

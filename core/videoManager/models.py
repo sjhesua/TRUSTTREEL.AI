@@ -10,6 +10,8 @@ class Video(models.Model):
 class VideoGenerationQueue(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    videoName = models.CharField(max_length=100)
+    customeURL = models.CharField(max_length=300)
     replicId = models.CharField(max_length=100)
 
 class VideoGenerationQueueItem(models.Model):

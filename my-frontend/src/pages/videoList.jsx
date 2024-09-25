@@ -1,81 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../components/Sidebar/Sidebar';
-import ClientList from '../components/clientList';
+import ModalComponent from './ModalComponent';
 import withAuth from '../funtions/withAuth';
-import { PlusIcon } from '@heroicons/react/24/solid';
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = process.env.REACT_APP_BACKEND_URL
 
 const VideoList = () => {
-
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    //
-    const [file, setFile] = useState(null);
-    const [message, setMessage] = useState('');
-    const [users, setUsers] = useState([]);
-
-    const [showModal, setShowModal] = useState(false);
-
-    const [newClient, setNewClient] = useState({ names: '', emails: '' });
-
-    const handleAddClient = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`${backendUrl}/client/add-clients/`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newClient),
-            });
-            if (response.ok) {
-                setMessage('Client added successfully');
-                setShowModal(false);
-                fetchClients();
-                // Actualizar la lista de clientes si es necesario
-            } else {
-                setMessage('Failed to add client');
-            }
-        } catch (error) {
-            setMessage('Error: ' + error.message);
-        }
-    };
-
-    const fetchClients = async () => {
-        try {
-            const response = await axios.get(`${backendUrl}/client/search-clients/`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Asumiendo que el token está almacenado en localStorage
-                }
-            });
-            setUsers(response.data);
-            console.log(response.data)
-        } catch (err) {
-            setError(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const [videos, setVideos] = useState([]);
+    const [selectedVideo, setSelectedVideo] = useState(null);
 
     useEffect(() => {
-        fetchClients();
+        axios.get(`${backendUrl}/videos/video-generation-queues/user/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => setVideos(response.data))
+            .catch(error => console.error('Error fetching data:', error));
     }, []);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
-
-
     return (
-        <div className="ml-20">
+        <div className='sm:ml-2 md:ml-60'>
             <Sidebar />
-            <div>
-                
+            <div className="container mx-auto p-4">
+                <table className="overflow-x-auto w-full">
+                    <thead className="bg-[#f230aa] text-white">
+                        <tr>
+                            <th className="py-2 px-4 ">Video Name</th>
+                            <th className="py-2 px-4 hidden md:table-cell">Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {videos.map(video => (
+                            <tr
+                                key={video.id}
+                                onClick={() => setSelectedVideo(video)}
+                                className="cursor-pointer hover:bg-[#f230aa] hover:text-white text-[#f230aa] transition-colors duration-200"
+                            >
+                                <td className="py-2 px-4 border-b border-[#f230aa]">{video.videoName}</td>
+                                <td className="py-2 px-4 border-b border-[#f230aa] hidden md:table-cell">{video.created_at}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+                {selectedVideo && <ModalComponent video={selectedVideo} videoName={selectedVideo.videoName} customeUrl={selectedVideo.customeURL} data={selectedVideo.items} onClose={() => setSelectedVideo(null)} />}
             </div>
         </div>
     );
 };
-export default withAuth(VideoList);
 
+export default withAuth(VideoList);

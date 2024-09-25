@@ -99,3 +99,7 @@
 {
   background-image: linear-gradient(237deg, #f73db2 -73.33%, #f6ca5e 113.89%);
 }
+.blur-noise {
+  filter: blur(5px) grayscale(100%);
+  background-size: cover;
+}
