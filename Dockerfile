@@ -5,11 +5,11 @@ FROM python:3.9-slim AS backend
 WORKDIR /app
 
 # Copiar y instalar dependencias del backend
-COPY requirements.txt requirements.txt
+COPY core/requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copiar el código del backend
-COPY . .
+COPY core /app
 
 # Construir la aplicación frontend (React)
 FROM node:14 AS frontend
@@ -22,7 +22,7 @@ COPY my-frontend/package.json my-frontend/package-lock.json ./
 RUN npm install
 
 # Copiar el código del frontend
-COPY frontend ./
+COPY my-frontend ./
 
 # Construir la aplicación frontend
 RUN npm run build
@@ -34,16 +34,16 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copiar las dependencias del backend
-COPY --from=core /app /app
+COPY --from=backend /app /app
 
 # Copiar los archivos construidos del frontend al directorio estático del backend
-COPY --from=my-frontend /my-frontend/build /app/static
+COPY --from=frontend /my-frontend/build /app/static
 
 # Instalar Node.js para ejecutar el servidor de desarrollo de React
 RUN apt-get update && apt-get install -y nodejs npm
 
 # Copiar el código del frontend nuevamente para el servidor de desarrollo
-COPY --from=my-frontend /my-frontend /my-frontend
+COPY --from=frontend /my-frontend /my-frontend
 
 # Exponer los puertos
 EXPOSE 8000 3000
