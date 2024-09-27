@@ -90,6 +90,10 @@ const VideoPlayer = ({ videos }) => {
         <div className="h-screen w-screen">
             {/*Este boto lo usamos para inicar todo, la grabacion y el waveform*/}
             <div className={`flex items-center justify-center h-full w-full ${showInitialButton ? '' : 'hidden'}`}>
+                <p>
+                Gracias por tu interés en dar feedback sobre la charla que dio Gonzalo Arzuaga en tu grupo Vistage. Te voy a hacer 3 preguntas cortitas acerca de como fue tu experiencia para compartir con otros coordinadores que estén buscando un expositor para sus grupos. 
+                Ah… cuando hagas una pausa en tu respuesta yo lo tomare como que terminaste, y acto seguido te hare la siguiente pregunta. Cuando estas listo, apreta el boton y empezamos!
+                </p>
                 <button
                     onClick={handleInitialButtonClick}
                     className="px-4 py-2 bg-blue-500 text-white rounded"
