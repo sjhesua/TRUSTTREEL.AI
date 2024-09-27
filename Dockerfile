@@ -4,6 +4,9 @@ FROM python:3.9-slim AS backend
 # Establecer el directorio de trabajo para el backend
 WORKDIR /app
 
+# Instalar herramientas de construcción
+RUN apt-get update && apt-get install -y build-essential
+
 # Copiar y instalar dependencias del backend
 COPY core/requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
@@ -47,6 +50,6 @@ COPY --from=frontend /my-frontend /my-frontend
 
 # Exponer los puertos
 EXPOSE 8000 3000
-#
+
 # Comando para ejecutar la aplicación
 CMD ["sh", "-c", "cd /my-frontend && npm start & uwsgi --http :8000 --wsgi-file api.py --callable app --master --processes 4 --threads 2 --http-timeout 3000"]
