@@ -53,6 +53,6 @@ RUN pip install uwsgi
 
 # Exponer los puertos
 EXPOSE 8000 3000
-#
+
 # Comando para ejecutar la aplicación
 CMD ["sh", "-c", "cd /my-frontend && npm start & uwsgi --http :8000 --wsgi-file api.py --callable app --master --processes 4 --threads 2 --http-timeout 3000"]
